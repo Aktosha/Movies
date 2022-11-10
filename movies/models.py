@@ -33,3 +33,26 @@ class Movie(models.Model):
 
     def __str__(self):
         return str(self.title)
+
+
+LINK_CHOICES = (
+    ('D', 'DOWNLOAD LINK'),
+    ('W', 'WATCH LINK'),
+)
+
+
+class MovieLinks(models.Model):
+    movie = models.ForeignKey(Movie, related_name='movie_watch_link', on_delete=models.CASCADE)
+    type = models.CharField(choices=LINK_CHOICES, max_length=1)
+    link = models.URLField()
+
+    def __str__(self):
+        return str(self.movie)
+
+
+class Popularity(models.Model):
+    movie_id = models.ForeignKey('Movie', default=' ', on_delete=models.CASCADE)
+    weight = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.movie_id
