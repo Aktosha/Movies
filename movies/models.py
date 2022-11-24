@@ -1,10 +1,11 @@
+from django.conf import settings
 from django.db import models
 
 CATEGORY_CHOICES = (
-    ('action', 'ACTION'),
-    ('drama', 'DRAMA'),
-    ('comedy', 'COMEDY'),
-    ('romance', 'ROMANCE'),
+    ('A', 'ACTION'),
+    ('D', 'DRAMA'),
+    ('C', 'COMEDY'),
+    ('R', 'ROMANCE'),
 )
 
 LANGUAGE_CHOICES = (
@@ -21,6 +22,7 @@ STATUS_CHOICES = (
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField(max_length=255)
     image = models.ImageField(upload_to='movies')
     banner = models.ImageField(upload_to='movies_banner')
@@ -56,3 +58,9 @@ class Popularity(models.Model):
 
     def __str__(self):
         return self.movie_id
+
+
+# class Comment(models.Model):
+#     content = models.CharField(max_length=100)
+#     movie_id = models.ForeignKey(Movie, on_delete=models.CASCADE)
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="movie_comment")
