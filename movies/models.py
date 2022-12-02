@@ -32,6 +32,7 @@ class Movie(models.Model):
     cast = models.CharField(max_length=100)
     year_of_production = models.DateField()
     views_count = models.IntegerField(default=0)
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, verbose_name="фильм", related_name="ratings")
 
     def __str__(self):
         return str(self.title)
