@@ -22,7 +22,7 @@ STATUS_CHOICES = (
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255, unique=False)
     description = models.TextField(max_length=255)
     image = models.ImageField(upload_to='movies')
     banner = models.ImageField(upload_to='movies_banner')
@@ -32,7 +32,9 @@ class Movie(models.Model):
     cast = models.CharField(max_length=100)
     year_of_production = models.DateField()
     views_count = models.IntegerField(default=0)
-    movie = models.ForeignKey('Movie', on_delete=models.CASCADE, verbose_name="фильм", related_name="ratings")
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE,
+                              verbose_name="фильм",
+                              related_name="ratings", blank=True, null=True)
 
     def __str__(self):
         return str(self.title)
@@ -61,7 +63,9 @@ class Popularity(models.Model):
         return self.movie_id
 
 
-# class Comment(models.Model):
-#     content = models.CharField(max_length=100)
-#     movie_id = models.ForeignKey(Movie, on_delete=models.CASCADE)
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="movie_comment")
+class Comment(models.Model):
+    content = models.CharField(max_length=100, default='now')
+    movie_id = models.ForeignKey(Movie, on_delete=models.CASCADE, default='now')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                             related_name="movie_comment",
+                             default='now')
